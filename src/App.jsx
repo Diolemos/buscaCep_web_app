@@ -18,6 +18,8 @@ const [cepsState,setCepsState] = useState({
   ceps: []
 })
 
+const [searchHistory, setSearchHistory] = useState([]);
+
 //TODO:handleDeleteCep
 
 //handleAddCep
@@ -38,7 +40,7 @@ const handleAddCep= (cepData, newCepId)=>{
   })  
 }
 
-//TODO: handleSelectedCep 
+//handleSelectedCep 
 
 const handleSelectedCep = (id)=>{
   setCepsState(prev=>{
@@ -66,16 +68,38 @@ async function handleFetchAddress(cep) {
       return;
     }
     const newCepData = response.data
-    const newCepId = Math.random();
+    const newCepId = Math.random(); //TODO: use UUID;
     console.log(newCepData);
-    handleAddCep(newCepData,newCepId)
-    handleSelectedCep(newCepId)
-   
+    handleAddCep(newCepData,newCepId);
+    handleSelectedCep(newCepId);
+    
+    handleAddSearchHistory(newCepId,newCepData.localidade)
+    
+    console.log(searchHistory)
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
   }
  
 }
+
+const handleAddSearchHistory = (cepId, localidade) => {
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString("pt-BR"); // dd/mm/yyyy
+  const formattedTime = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); // HH:mm
+
+  setSearchHistory(prev => {
+    const newItem = {
+      id: cepId,
+      date: formattedDate,
+      time: formattedTime,
+      localidade,
+    };
+
+    // Create a new array with the new item and limit the length to 10
+    const updatedHistory = [newItem, ...prev].slice(0, 10);
+    return updatedHistory;
+  });
+};
 
 
   const [open, setOpen] = useState(true);
