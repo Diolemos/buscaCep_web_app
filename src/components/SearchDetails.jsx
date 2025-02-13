@@ -12,11 +12,13 @@ export default function SearchDetails({ cep }) {
 
         <h2 className="text-xl font-semibold text-ultraBlue mb-2">Detalhes do CEP</h2>
         <ul className="list-none">
-          {filteredEntries.map(([key, value]) => (
+          {filteredEntries.map(([key, value]) => {
+            if( key == 'id') return
+            return (
             <li key={key} className="border-b last:border-none py-2">
               <strong className="capitalize">{key.replace(/_/g, ' ')}:</strong> {value}
             </li>
-          ))}
+          )})}
         </ul>
       </div>
     );

@@ -22,23 +22,32 @@ const [cepsState,setCepsState] = useState({
 
 //handleAddCep
 
-const handleAddCep= (cepData)=>{
+const handleAddCep= (cepData, newCepId)=>{
   setCepsState(prev=>{
-    const cepId = Math.random();
+    
     const newCep = {
         ...cepData,
-        id: cepId
+        id: newCepId
     }
     
     return {
         ...prev,
-        selectedCepId: undefined,
+        selectedCepId: newCepId,
         ceps:[...prev.ceps, newCep ]
     }
   })  
 }
 
 //TODO: handleSelectedCep 
+
+const handleSelectedCep = (id)=>{
+  setCepsState(prev=>{
+      return{
+          ...prev,
+          selectedProjectId: id,
+      }
+  })
+}
 
 async function handleFetchAddress(cep) {
   cep = cep.replace(/\D/g, ""); //double check..just in case
@@ -57,8 +66,10 @@ async function handleFetchAddress(cep) {
       return;
     }
     const newCepData = response.data
+    const newCepId = Math.random();
     console.log(newCepData);
-    handleAddCep(newCepData)
+    handleAddCep(newCepData,newCepId)
+    handleSelectedCep(newCepId)
    
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
@@ -71,8 +82,9 @@ async function handleFetchAddress(cep) {
   function handleToggleSidebar() {
     setOpen((prev) => !prev);
   }
-
+  let selectedCep = cepsState.ceps.find(cep =>cep.id ===cepsState.selectedCepId)
   return (
+   
 
 <>
 
@@ -98,9 +110,9 @@ async function handleFetchAddress(cep) {
       </button>
 
       <SearchBar onSearchAddress={handleFetchAddress} />
-      {cepsState[ceps].length > 0 && (
+      {cepsState["ceps"].length > 0 && (
  
-    <SearchDetails cep={ceps[0]} />
+    <SearchDetails cep={selectedCep} />
   
 )}
      
