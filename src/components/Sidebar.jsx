@@ -17,13 +17,13 @@ export default function Sidebar({ open, onToggleSidebar, searchHistory, onDelete
     <ul className="mt-6">
         {console.log(searchHistory)}
         {searchHistory && searchHistory.map(searchItem => {
-          let cssClasses = "cursor-pointer w-full text-left px-2 py-1 rounded-sm my-1";
-          
-          if (searchItem.id === selectedCepId) {
-            cssClasses += ' bg-ultraBlue text-white';
-          } else {
-            cssClasses += ' bg-white hover:bg-stone-100 text-ultraBlue';
-          }
+          let cssClasses = "cursor-pointer w-full text-left px-2 py-1 rounded-sm my-1 transition-all duration-200 ease-in-out";
+
+if (searchItem.id === selectedCepId) {
+  cssClasses += " bg-ultraBlue hover:bg-ultraBlue-light text-white border-3 border-gray-400 scale-105 shadow-md";
+} else {
+  cssClasses += " bg-white hover:bg-stone-200 text-ultraBlue border border-gray-400 hover:scale-105";
+}
 
           return (
             <li key={searchItem.id}>
