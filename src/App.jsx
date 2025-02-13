@@ -20,7 +20,17 @@ const [cepsState,setCepsState] = useState({
 
 const [searchHistory, setSearchHistory] = useState([]);
 
-//TODO:handleDeleteCep
+//handleDeleteCep
+const handleDeleteCep = (id) => {
+  // Delete from searchHistory
+  setSearchHistory(prev => prev.filter(item => item.id !== id));
+
+  // Delete from cepsState
+  setCepsState(prev => {
+    const { [id]: _, ...rest } = prev; // Remove the item with the given id
+    return rest;
+  });
+};
 
 //handleAddCep
 
@@ -75,7 +85,7 @@ async function handleFetchAddress(cep) {
     
     handleAddSearchHistory(newCepId,newCepData.localidade)
     
-    console.log(searchHistory)
+    
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
   }
@@ -114,8 +124,11 @@ const handleAddSearchHistory = (cepId, localidade) => {
 
 <Sidebar
     onToggleSidebar={handleToggleSidebar}
-    onFetchAdress={handleFetchAddress}
+    selectedCepId={cepsState.selectedCepId}
+    onSelectCep={handleSelectedCep}
+    onDeleteCep={handleDeleteCep}
     open={open}
+    searchHistory={searchHistory}
   />
     <div className=" bg-ultraBlue h-screen w-full  flex flex-col justify-items-center  gap-8  mt-8  px-1">
      
