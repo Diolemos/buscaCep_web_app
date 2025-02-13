@@ -22,7 +22,7 @@ export default function Sidebar({ open, onToggleSidebar, searchHistory, onDelete
 if (searchItem.id === selectedCepId) {
   cssClasses += " bg-ultraBlue hover:bg-ultraBlue-light text-white border-3 border-gray-400 scale-105 shadow-md";
 } else {
-  cssClasses += " bg-white hover:bg-stone-200 text-ultraBlue border border-gray-400 hover:scale-105";
+  cssClasses += " bg-white hover:bg-stone-200 text-ultraBlue border border-gray-400 hover:scale-105 ";
 }
 
           return (

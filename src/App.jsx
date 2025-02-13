@@ -46,7 +46,8 @@ useEffect(() => {
 //handleDeleteCep
 const handleDeleteCep = (id) => {
   setCepsState(prev => {
-    const updatedCeps = prev.ceps.filter(cep => cep.id !== id);
+    let updatedCeps = prev.ceps.filter(cep => cep.id !== id);
+    if(id === updatedCeps.selectedCepId) updatedCeps.selectedCepId = undefined;
 
     if (updatedCeps.length === 0) {
       localStorage.removeItem("cepsState"); // Clear if empty
