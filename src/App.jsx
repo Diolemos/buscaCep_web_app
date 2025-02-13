@@ -13,9 +13,32 @@ import SearchDetails from "./components/SearchDetails";
 function App() {
 
   
-const [ceps,setCeps] = useState([])
+const [cepsState,setCepsState] = useState({
+  selectedCepId: undefined,
+  ceps: []
+})
 
+//TODO:handleDeleteCep
 
+//handleAddCep
+
+const handleAddCep= (cepData)=>{
+  setCepsState(prev=>{
+    const cepId = Math.random();
+    const newCep = {
+        ...cepData,
+        id: cepId
+    }
+    
+    return {
+        ...prev,
+        selectedCepId: undefined,
+        ceps:[...prev.ceps, newCep ]
+    }
+  })  
+}
+
+//TODO: handleSelectedCep 
 
 async function handleFetchAddress(cep) {
   cep = cep.replace(/\D/g, ""); //double check..just in case
@@ -33,8 +56,9 @@ async function handleFetchAddress(cep) {
       console.error("CEP não encontrado.");
       return;
     }
-    console.log(response.data);
-    setCeps(prev=>[...prev, response.data])
+    const newCepData = response.data
+    console.log(newCepData);
+    handleAddCep(newCepData)
    
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
@@ -74,7 +98,7 @@ async function handleFetchAddress(cep) {
       </button>
 
       <SearchBar onSearchAddress={handleFetchAddress} />
-      {ceps.length > 0 && (
+      {cepsState[ceps].length > 0 && (
  
     <SearchDetails cep={ceps[0]} />
   
