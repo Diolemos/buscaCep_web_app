@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import SearchBar from "./components/SearchBar";
 import api from "./services/Api";
+import SearchDetails from "./components/SearchDetails";
 
 
 
@@ -11,8 +12,10 @@ import api from "./services/Api";
 
 function App() {
 
-
+  
 const [ceps,setCeps] = useState([])
+
+
 
 async function handleFetchAddress(cep) {
   cep = cep.replace(/\D/g, ""); //double check..just in case
@@ -32,6 +35,7 @@ async function handleFetchAddress(cep) {
     }
     console.log(response.data);
     setCeps(prev=>[...prev, response.data])
+   
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
   }
@@ -62,7 +66,7 @@ async function handleFetchAddress(cep) {
   </div>
       {/* Hamburger Button (Only Visible on Small Screens) */}
       <button
-        className="md:hidden absolute top-4 right-4 z-50 p-2 bg-white text-ultraBlue rounded-full shadow-lg"
+        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-white text-ultraBlue rounded-full shadow-lg"
         onClick={handleToggleSidebar}
       >
         {" "}
@@ -70,7 +74,11 @@ async function handleFetchAddress(cep) {
       </button>
 
       <SearchBar onSearchAddress={handleFetchAddress} />
-
+      {ceps.length > 0 && (
+ 
+    <SearchDetails cep={ceps[0]} />
+  
+)}
      
     </div>
 </>
