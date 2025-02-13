@@ -8,21 +8,23 @@ export default function HistoryItem({ historyItem, onDeleteCep }) {
 
       
       <span
-        onClick={() => onDeleteCep(historyItem.id)}
-        className="ml-auto cursor-pointer text-ultraOrange hover:text-red-700"
+        onClick={(e) =>{
+          e.stopPropagation()
+           onDeleteCep(historyItem.id)}}
+        className="ml-auto z-50 cursor-pointer text-ultraOrange hover:text-red-700"
         aria-label="Delete search history item"
       >
         <XCircleIcon className="w-5 h-5" />
       </span></div>
      
       {/* Date */}
-      <span className="text-sm">{historyItem.date}</span>
+      <div className="text-sm">{historyItem.date}</div>
 
       {/* Time */}
-      <span className="text-sm ">{historyItem.time}</span>
+      <div className="text-sm ">{historyItem.time}</div>
 
       {/* Localidade */}
-      <span className="text-sm ">{historyItem.localidade}</span>
+      <div className="text-sm ">{historyItem.localidade}</div>
 
       {/* Delete Button */}
       

@@ -28,7 +28,9 @@ export default function Sidebar({ open, onToggleSidebar, searchHistory, onDelete
           return (
             <li key={searchItem.id}>
               <button 
-                onClick={() => onSelectCep(searchItem.id)} 
+                onClick={(e) =>{ 
+                  e.stopPropagation()
+                  onSelectCep(searchItem.id)}} 
                 className={cssClasses}
               >
                 <HistoryItem historyItem={searchItem} onDeleteCep={onDeleteCep} />
