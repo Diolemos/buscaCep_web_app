@@ -1,8 +1,18 @@
-export default function SearchBar(){
+import { useState } from "react";
+
+export default function SearchBar({onSearchAddress}){
+    const [input, setInput] = useState('')
+    function handleSubmit(e) {
+        e.preventDefault(); // Prevents the page from reloading
+        
+        const cep = input; 
+       const  sanitizedCep = cep.replace(/\D/g, ''); //replace anything that is not a number with ''
+        onSearchAddress(sanitizedCep); 
+      }
 
 
     return(
-        <form className="w-full max-w-[250px] md:max-w-[300px] lg:max-w-[500px] mx-auto   mt-30  ">  
+        <form onSubmit={handleSubmit} className="w-full max-w-[250px] md:max-w-[300px] lg:max-w-[500px] mx-auto   mt-30  ">  
   <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
   <div className="relative">
     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -11,6 +21,8 @@ export default function SearchBar(){
       </svg>
     </div>
     <input
+     value={input}
+     onChange={e => setInput(e.target.value)}
       type="search"
       id="default-search"
       className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
