@@ -2,7 +2,7 @@ export default function SearchBar(){
 
 
     return(
-        <form className="w-full max-w-[250px] mx-auto   mt-30  ">  
+        <form className="w-full max-w-[250px] md:max-w-[300px] lg:max-w-[500px] mx-auto   mt-30  ">  
   <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
   <div className="relative">
     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
