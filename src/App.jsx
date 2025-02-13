@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Bars3Icon } from "@heroicons/react/24/solid";
@@ -8,38 +8,60 @@ import SearchDetails from "./components/SearchDetails";
 
 
 
+const DEFAULT_CEPS_STATE = { selectedCepId: undefined, ceps: [] };
+const DEFAULT_SEARCH_HISTORY = [];
 
 
 function App() {
 
   
-const [cepsState,setCepsState] = useState({
-  selectedCepId: undefined,
-  ceps: []
-})
+  const [cepsState, setCepsState] = useState(() => {
+    const saved = localStorage.getItem("cepsState");
+    return saved ? JSON.parse(saved) : DEFAULT_CEPS_STATE;
+  });
 
-const [searchHistory, setSearchHistory] = useState([]);
+  const [searchHistory, setSearchHistory] = useState(() => {
+    const saved = localStorage.getItem("searchHistory");
+    return saved ? JSON.parse(saved) : DEFAULT_SEARCH_HISTORY;
+  });
 
 const [open, setOpen] = useState(true);
 function handleToggleSidebar() {
   setOpen((prev) => !prev);
 }
 
+//on state change
+useEffect(() => {
+  if (cepsState.ceps.length > 0) {
+    localStorage.setItem("cepsState", JSON.stringify(cepsState));
+  }
+}, [cepsState]);
 
-
+useEffect(() => {
+  if (searchHistory.length > 0) {
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  }
+}, [searchHistory]);
 
 //handleDeleteCep
 const handleDeleteCep = (id) => {
-  // Delete from searchHistory
-  setSearchHistory(prev => prev.filter(item => item.id !== id));
-
-  // Delete from cepsState
   setCepsState(prev => {
-    const { [id]: _, ...rest } = prev; // Remove the item with the given id
-    return rest;
-  });
-};
+    const updatedCeps = prev.ceps.filter(cep => cep.id !== id);
 
+    if (updatedCeps.length === 0) {
+      localStorage.removeItem("cepsState"); // Clear if empty
+      localStorage.removeItem("searchHistory");
+      return DEFAULT_CEPS_STATE;
+    }
+
+    return {
+      selectedCepId: updatedCeps[0]?.id || undefined, // Set to the first remaining cep
+      ceps: updatedCeps
+    };
+  });
+
+  setSearchHistory(prev => prev.filter(item => item.id !== id));
+};
 //handleAddCep
 
 const handleAddCep = (cepData, newCepId) => {
