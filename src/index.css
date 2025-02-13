@@ -14,3 +14,8 @@ body,html{
   
 }
 
+#root{
+  display: flex;
+  flex-direction: row;
+}
+

@@ -39,18 +39,27 @@ async function handleFetchAddress(cep) {
 }
 
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   function handleToggleSidebar() {
     setOpen((prev) => !prev);
   }
 
   return (
-    <div className=" bg-ultraBlue h-screen  flex gap-8  mt-8  px-1">
-      <Sidebar
-        onToggleSidebar={handleToggleSidebar}
-        onFetchAdress={handleFetchAddress}
-        open={open}
-      />
+
+<>
+
+<Sidebar
+    onToggleSidebar={handleToggleSidebar}
+    onFetchAdress={handleFetchAddress}
+    open={open}
+  />
+    <div className=" bg-ultraBlue h-screen w-full  flex flex-col justify-items-center  gap-8  mt-8  px-1">
+     
+       <div >
+    <h1 className="text-stone-100 text-center jus text-5xl">
+      Busca<span className="text-ultraBlue-hl">Cep</span>
+    </h1>
+  </div>
       {/* Hamburger Button (Only Visible on Small Screens) */}
       <button
         className="md:hidden absolute top-4 right-4 z-50 p-2 bg-white text-ultraBlue rounded-full shadow-lg"
@@ -64,6 +73,10 @@ async function handleFetchAddress(cep) {
 
      
     </div>
+</>
+
+
+
   );
 }
 
