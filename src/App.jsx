@@ -20,6 +20,14 @@ const [cepsState,setCepsState] = useState({
 
 const [searchHistory, setSearchHistory] = useState([]);
 
+const [open, setOpen] = useState(true);
+function handleToggleSidebar() {
+  setOpen((prev) => !prev);
+}
+
+
+
+
 //handleDeleteCep
 const handleDeleteCep = (id) => {
   // Delete from searchHistory
@@ -34,31 +42,39 @@ const handleDeleteCep = (id) => {
 
 //handleAddCep
 
-const handleAddCep= (cepData, newCepId)=>{
-  setCepsState(prev=>{
-    
+const handleAddCep = (cepData, newCepId) => {
+  setCepsState(prev => {
     const newCep = {
-        ...cepData,
-        id: newCepId
+      ...cepData,
+      id: newCepId
+    };
+
+    // Check if the length of the ceps array is 10
+    const updatedCeps = [...prev.ceps, newCep];
+    if (updatedCeps.length > 10) {
+      updatedCeps.shift(); // Removes the first (oldest) item if length exceeds 10
     }
-    
+
     return {
-        ...prev,
-        selectedCepId: newCepId,
-        ceps:[...prev.ceps, newCep ]
-    }
-  })  
-}
+      ...prev,
+      selectedCepId: newCepId,
+      ceps: updatedCeps
+    };
+  });
+};
 
 //handleSelectedCep 
 
 const handleSelectedCep = (id)=>{
+  console.log("selected id: "+id)
   setCepsState(prev=>{
       return{
           ...prev,
-          selectedProjectId: id,
+          selectedCepId: id,
       }
   })
+  
+  
 }
 
 async function handleFetchAddress(cep) {
@@ -81,7 +97,7 @@ async function handleFetchAddress(cep) {
     const newCepId = Math.random(); //TODO: use UUID;
     console.log(newCepData);
     handleAddCep(newCepData,newCepId);
-    handleSelectedCep(newCepId);
+    //handleSelectedCep(newCepId);
     
     handleAddSearchHistory(newCepId,newCepData.localidade)
     
@@ -112,11 +128,7 @@ const handleAddSearchHistory = (cepId, localidade) => {
 };
 
 
-  const [open, setOpen] = useState(true);
-  function handleToggleSidebar() {
-    setOpen((prev) => !prev);
-  }
-  let selectedCep = cepsState.ceps.find(cep =>cep.id ===cepsState.selectedCepId)
+ 
   return (
    
 
@@ -149,7 +161,7 @@ const handleAddSearchHistory = (cepId, localidade) => {
       <SearchBar onSearchAddress={handleFetchAddress} />
       {cepsState["ceps"].length > 0 && (
  
-    <SearchDetails cep={selectedCep} />
+    <SearchDetails cep={cepsState.ceps.find(cep =>cep.id ===cepsState.selectedCepId)} />
   
 )}
      
