@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme{
+  --color-ultraBlue: #0F1021;
+  --color-ultraBlue-hl: rgb(3, 183, 252);
+  --color-ultraOrange: rgb(255, 79, 63);
+  --color-ultraOrange_dark: #ed4637;
+  --color-ultraOrange_light: #fc5647;
+}
+
+
+body,html{
+  background-color:#0F1021 ;
+  
+}
+
