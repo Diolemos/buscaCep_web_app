@@ -5,6 +5,7 @@ import { Bars3Icon } from "@heroicons/react/24/solid";
 import SearchBar from "./components/SearchBar";
 import api from "./services/Api";
 import SearchDetails from "./components/SearchDetails";
+import Loading from "./components/loading/Loading";
 
 
 
@@ -29,6 +30,7 @@ const [open, setOpen] = useState(true);
 function handleToggleSidebar() {
   setOpen((prev) => !prev);
 }
+const [isLoading, setIsLoading] = useState(false);
 
 //on state change
 useEffect(() => {
@@ -102,7 +104,7 @@ const handleSelectedCep = (id)=>{
 
 async function handleFetchAddress(cep) {
   cep = cep.replace(/\D/g, ""); //double check..just in case
-  
+  setIsLoading(true);
   
   if (cep.length !== 8) {
     console.error("CEP inválido. Deve conter exatamente 8 dígitos.");
@@ -128,6 +130,7 @@ async function handleFetchAddress(cep) {
   } catch (error) {
     console.error("Erro ao buscar cep:", error);
   }
+  setIsLoading(false)
  
 }
 
@@ -165,6 +168,7 @@ const handleAddSearchHistory = (cepId, localidade) => {
     open={open}
     searchHistory={searchHistory}
   />
+  {isLoading&&<Loading/>}
     <div className=" bg-ultraBlue h-screen w-full  flex flex-col justify-items-center  gap-8  mt-8  px-1">
      
        <div >
