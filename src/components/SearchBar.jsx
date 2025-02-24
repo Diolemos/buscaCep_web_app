@@ -1,7 +1,11 @@
 import { useState } from "react";
 
+
+
 export default function SearchBar({onSearchAddress}){
     const [input, setInput] = useState('')
+   
+  
     function handleSubmit(e) {
         e.preventDefault(); // Prevents the page from reloading
         
@@ -12,6 +16,8 @@ export default function SearchBar({onSearchAddress}){
 
 
     return(
+
+
         <form onSubmit={handleSubmit} className="w-full max-w-[250px] md:max-w-[300px] lg:max-w-[500px] mx-auto   mt-20  ">  
   <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
   <div className="relative">
@@ -22,7 +28,7 @@ export default function SearchBar({onSearchAddress}){
     </div>
     <input
      value={input}
-     pattern="\d{8}"
+    
      onChange={e => setInput(e.target.value)}
       type="search"
       id="default-search"
@@ -37,6 +43,7 @@ export default function SearchBar({onSearchAddress}){
       Search
     </button>
   </div>
+ 
 </form>
     )
 

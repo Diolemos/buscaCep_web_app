@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import { Bars3Icon } from "@heroicons/react/24/solid";
@@ -6,6 +6,7 @@ import SearchBar from "./components/SearchBar";
 import api from "./services/Api";
 import SearchDetails from "./components/SearchDetails";
 import Loading from "./components/loading/Loading";
+import Modal from "./components/Modal";
 
 
 
@@ -31,6 +32,8 @@ function handleToggleSidebar() {
   setOpen((prev) => !prev);
 }
 const [isLoading, setIsLoading] = useState(false);
+const modalRef= useRef();
+let ErrorMessage = '';
 
 //on state change
 useEffect(() => {
@@ -104,18 +107,21 @@ const handleSelectedCep = (id)=>{
 
 async function handleFetchAddress(cep) {
   cep = cep.replace(/\D/g, ""); //double check..just in case
-  setIsLoading(true);
+  
   
   if (cep.length !== 8) {
-    console.error("CEP inválido. Deve conter exatamente 8 dígitos.");
+   ErrorMessage = "CEP Deve conter 8 dígitos.";
+   modalRef.current.open()
     return;
   }
 
   try {
+    setIsLoading(true);
     const response = await api.get(`${cep}/json/`);
       
     if (response.data.erro) {  // Handle nonexistent CEP
-      console.error("CEP não encontrado.");
+      ErrorMessage ="CEP não encontrado.";
+      modalRef.current.open()
       return;
     }
     const newCepData = response.data
@@ -128,10 +134,13 @@ async function handleFetchAddress(cep) {
     
     
   } catch (error) {
-    console.error("Erro ao buscar cep:", error);
+    ErrorMessage = "Erro ao buscar cep: " + error;
+    modalRef.current.open()
   }
-  setIsLoading(false)
- 
+  finally{
+    setIsLoading(false)
+  }
+  
 }
 
 const handleAddSearchHistory = (cepId, localidade) => {
@@ -168,6 +177,10 @@ const handleAddSearchHistory = (cepId, localidade) => {
     open={open}
     searchHistory={searchHistory}
   />
+   <Modal ref={modalRef}>
+      <h2>Invalid data</h2>
+      <p>{ErrorMessage}</p>
+  </Modal>
   {isLoading&&<Loading/>}
     <div className=" bg-ultraBlue h-screen w-full  flex flex-col justify-items-center  gap-8  mt-8  px-1">
      
