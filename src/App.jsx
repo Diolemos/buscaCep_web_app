@@ -33,7 +33,7 @@ function handleToggleSidebar() {
 }
 const [isLoading, setIsLoading] = useState(false);
 const modalRef= useRef();
-let ErrorMessage = '';
+const [errorMessage, setErrorMessage] = useState('');
 
 //on state change
 useEffect(() => {
@@ -110,7 +110,7 @@ async function handleFetchAddress(cep) {
   
   
   if (cep.length !== 8) {
-   ErrorMessage = "CEP Deve conter 8 dígitos.";
+    setErrorMessage(  "CEP Deve conter 8 dígitos.");
    modalRef.current.open()
     return;
   }
@@ -120,7 +120,7 @@ async function handleFetchAddress(cep) {
     const response = await api.get(`${cep}/json/`);
       
     if (response.data.erro) {  // Handle nonexistent CEP
-      ErrorMessage ="CEP não encontrado.";
+      setErrorMessage( "CEP não encontrado.");
       modalRef.current.open()
       return;
     }
@@ -134,7 +134,7 @@ async function handleFetchAddress(cep) {
     
     
   } catch (error) {
-    ErrorMessage = "Erro ao buscar cep: " + error;
+    setErrorMessage( "Erro ao buscar cep: " + error);
     modalRef.current.open()
   }
   finally{
@@ -178,8 +178,8 @@ const handleAddSearchHistory = (cepId, localidade) => {
     searchHistory={searchHistory}
   />
    <Modal ref={modalRef}>
-      <h2>Invalid data</h2>
-      <p>{ErrorMessage}</p>
+      <h2>Erro</h2>
+      <p>{errorMessage}</p>
   </Modal>
   {isLoading&&<Loading/>}
     <div className=" bg-ultraBlue h-screen w-full  flex flex-col justify-items-center  gap-8  mt-8  px-1">
