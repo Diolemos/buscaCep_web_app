@@ -1,6 +1,6 @@
 :root {
     --main-color: #ecf0f1;
-    --point-color: #ffffff;
+    --point-color: rgb(255, 79, 63);
     --size: 8px;
   }
 
@@ -19,7 +19,7 @@
   }
   
   .element {
-    border-radius: 100%;
+    border-radius: 0%;
     border: var(--size) solid var(--point-color);
     margin: calc(var(--size) * 2);
   }
