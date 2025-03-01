@@ -11,7 +11,7 @@ import Modal from "./components/Modal";
 
 
 const DEFAULT_CEPS_STATE = { selectedCepId: undefined, ceps: [] };
-const DEFAULT_SEARCH_HISTORY = [];
+
 
 
 function App() {
@@ -22,10 +22,7 @@ function App() {
     return saved ? JSON.parse(saved) : DEFAULT_CEPS_STATE;
   });
 
-  const [searchHistory, setSearchHistory] = useState(() => {
-    const saved = localStorage.getItem("searchHistory");
-    return saved ? JSON.parse(saved) : DEFAULT_SEARCH_HISTORY;
-  });
+  
 
 const [open, setOpen] = useState(true);
 function handleToggleSidebar() {
@@ -42,11 +39,6 @@ useEffect(() => {
   }
 }, [cepsState]);
 
-useEffect(() => {
-  if (searchHistory.length > 0) {
-    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-  }
-}, [searchHistory]);
 
 //handleDeleteCep
 const handleDeleteCep = (id) => {
@@ -66,7 +58,7 @@ const handleDeleteCep = (id) => {
     };
   });
 
-  setSearchHistory(prev => prev.filter(item => item.id !== id));
+  
 };
 //handleAddCep
 
@@ -130,7 +122,7 @@ async function handleFetchAddress(cep) {
     handleAddCep(newCepData,newCepId);
     //handleSelectedCep(newCepId);
     
-    handleAddSearchHistory(newCepId,newCepData.localidade)
+    
     
     
   } catch (error) {
@@ -143,26 +135,14 @@ async function handleFetchAddress(cep) {
   
 }
 
-const handleAddSearchHistory = (cepId, localidade) => {
-  const now = new Date();
-  const formattedDate = now.toLocaleDateString("pt-BR"); // dd/mm/yyyy
-  const formattedTime = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }); // HH:mm
-
-  setSearchHistory(prev => {
-    const newItem = {
-      id: cepId,
-      date: formattedDate,
-      time: formattedTime,
-      localidade,
-    };
-
-    // Create a new array with the new item and limit the length to 10
-    const updatedHistory = [newItem, ...prev].slice(0, 10);
-    return updatedHistory;
-  });
-};
 
 
+let searchHistory = cepsState.ceps.map(cep => ({
+  id: cep.id,
+  date: new Date().toLocaleDateString("pt-BR"),
+  time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+  localidade: cep.localidade,
+}))
  
   return (
    
